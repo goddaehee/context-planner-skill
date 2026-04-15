@@ -1,0 +1,16 @@
+{
+  "name": "context-planner-skill",
+  "owner": {
+    "name": "goddaehee",
+    "email": ""
+  },
+  "plugins": [
+    {
+      "name": "context-planner",
+      "source": "./",
+      "category": "productivity",
+      "description": "Context-to-plan AI skill for PMs and engineers. Turns scattered wikis into plan.md in 5 minutes.",
+      "keywords": ["context", "planning", "confluence", "pm", "skill", "plan.md", "pptx"]
+    }
+  ]
+}

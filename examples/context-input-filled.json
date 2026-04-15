@@ -1,0 +1,88 @@
+{
+  "case_name": "blog-comment-moderation",
+  "version": "1.2",
+  "maturity_level": "L2",
+  "owner": "Content Platform PM",
+  "last_updated": "2026-04-10",
+  "source_wikis": [
+    "https://wiki.yourcompany.com/pages/viewpage.action?pageId=12345678",
+    "https://wiki.yourcompany.com/pages/viewpage.action?pageId=12345679",
+    "https://wiki.yourcompany.com/pages/viewpage.action?pageId=12345680"
+  ],
+  "source_page_ids": [12345678, 12345679, 12345680],
+
+  "intent": "블로그 플랫폼에 AI 기반 댓글 1차 필터링 및 운영자 검토 큐를 추가하여, 스팸·혐오 댓글 노출 시간을 현행 48시간에서 3초(자동 차단) / 24시간(검토 대기)으로 단축한다.",
+
+  "background": "하루 평균 120건 이상의 스팸·혐오 댓글이 발생하며, 사후 신고 처리만 가능한 현 구조로 인해 미처리 댓글 노출 후 신규 가입 전환율이 18% 하락했다. Q2 브랜드 안전성 OKR 달성을 위해 사전 차단 기능이 필요하다.",
+
+  "scope": {
+    "in": [
+      "AI 기반 댓글 1차 자동 분류 (승인 / 검토 대기 / 자동 차단)",
+      "운영자 검토 큐 화면 (목록, 승인·거절·영구 차단 액션)",
+      "작성자 이메일 알림 (검토 중, 거절)",
+      "블랙리스트 키워드 관리 (관리자 전용)",
+      "검토 결과 감사 로그 (30일 보관)"
+    ],
+    "out": [
+      "댓글 UI/UX 개편",
+      "사용자 등급별 노출 규칙",
+      "외부 신고 API 연동",
+      "다국어 AI 모델 추가 학습"
+    ]
+  },
+
+  "domain_rules": [
+    "신뢰도 ≥ 0.90 → 자동 승인 (즉시 게시)",
+    "0.60 ≤ 신뢰도 < 0.90 → 검토 대기 큐",
+    "신뢰도 < 0.60 또는 블랙리스트 매칭 → 자동 차단",
+    "블랙리스트 우선 적용 (AI 결과와 무관)",
+    "검토 큐 SLA: 24시간 이내 처리",
+    "AI API 응답 3초 초과 시 검토 대기로 fallback"
+  ],
+
+  "integration": {
+    "ai_api": "/api/ml/classify (내부 ML 플랫폼, REST)",
+    "notification": "notification-service (기존 재사용, 신규 템플릿 2종 추가)",
+    "auth": "기존 어드민 SSO (신규 권한 ROLE_CONTENT_OPS 추가)",
+    "failure_policy": "AI API 타임아웃 시 검토 대기 fallback (서비스 중단 없음)"
+  },
+
+  "permissions": {
+    "view": ["ROLE_ADMIN", "ROLE_CONTENT_OPS"],
+    "approve_reject": ["ROLE_CONTENT_OPS", "ROLE_ADMIN"],
+    "permanent_ban_blacklist": ["ROLE_ADMIN"]
+  },
+
+  "open_questions": [
+    {
+      "id": 1,
+      "question": "오탐 시 작성자 이의신청 경로가 있어야 하는가?",
+      "scope": "UX, 운영 프로세스",
+      "path": "운영팀 협의",
+      "owner": "Content Platform PM",
+      "fallback": "이번 범위 제외, 다음 분기 검토"
+    },
+    {
+      "id": 2,
+      "question": "AI 모델 재학습 주기 및 오탐률 모니터링 대시보드 필요 여부",
+      "scope": "ML 플랫폼, 운영",
+      "path": "ML팀 협의",
+      "owner": "ML Lead",
+      "fallback": "배포 후 30일 데이터 수집 후 결정"
+    }
+  ],
+
+  "acceptance_criteria": [
+    "댓글 작성 시 3초 이내 AI 분류 반영",
+    "신뢰도 ≥ 0.90 댓글 즉시 게시, 큐 미진입",
+    "블랙리스트 키워드 포함 댓글 AI 무관 자동 차단",
+    "운영자 검토 큐에서 1클릭 처리 (영구 차단은 확인 다이얼로그)",
+    "거절 시 작성자 이메일 1회 발송",
+    "모든 액션 감사 로그 기록",
+    "AI API 장애 시 fallback 동작, 서비스 중단 없음",
+    "미인가 접근 시 403/401 반환"
+  ],
+
+  "phase_a_confidence": 0.88,
+  "phase_a_notes": "위키 3개 페이지에서 요구사항·AI 모델 선정·운영 프로세스 문서를 수집. AI 신뢰도 임계값, 권한 체계, SLA는 문서에 명시되어 있어 확정. 이의신청 UX와 모니터링 대시보드는 미확정으로 Open Question 처리."
+}

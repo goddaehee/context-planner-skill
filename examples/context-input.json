@@ -1,0 +1,49 @@
+{
+  "_comment": "context-planner 입력 파일. 실전 예시는 context-input-filled.json 참조.",
+
+  "case_name": "your-feature-name",
+  "intent": "왜 이 작업을 하는가? 어떤 비즈니스 문제를 해결하는가?",
+  "scope": "이번에 만들 것 — 구체적으로",
+  "out_of_scope": "이번에 절대 건드리지 않을 것",
+  "owner": "담당자 이름",
+  "target_project": "Jira 프로젝트 키 (예: LFML)",
+
+  "source_urls": [
+    "https://wiki.yourcompany.com/pages/viewpage.action?pageId=요구사항페이지",
+    "https://wiki.yourcompany.com/pages/viewpage.action?pageId=개발분석페이지"
+  ],
+  "source_page_ids": ["pageId1", "pageId2"],
+
+  "constraints": {
+    "design_ui": "기존 디자인 시스템 컴포넌트만 사용, 신규 발명 금지",
+    "integration": "서버 호출 방식 및 제약 사항",
+    "permission_security": "권한·보안 제약"
+  },
+
+  "_comment_resolved": "인터뷰/조사를 통해 이미 확정된 질문과 답변. plan.md Domain Rules로 직접 변환됨.",
+  "resolved_questions": {
+    "key_rule_name": "확정된 답변 내용 (예: 'Transfer Type=1은 웹 강제 이동')",
+    "another_rule": "확정된 답변"
+  },
+
+  "_comment_remaining": "아직 미해소된 질문. plan.md Open Questions 섹션으로 변환됨.",
+  "remaining_questions": [
+    "아직 확정되지 않은 질문 1 — 영향: [어떤 기능에 영향]",
+    "아직 확정되지 않은 질문 2"
+  ],
+
+  "_comment_deferred": "기존 운영 버그 중 이번 scope에서 제외하는 것. plan.md Out-of-scope 섹션으로 변환됨.",
+  "deferred_bugs": [
+    "버그 설명 — Phase 2 이관 예정"
+  ],
+
+  "_comment_ui_guidance": "TO-BE 화면에 표시할 안내 문구, placeholder 텍스트 등. plan.md 완료 기준과 제약 조건에 반영됨.",
+  "ui_guidance": [
+    "예: '필요한 정보를 모두 입력하면 버튼이 활성화됩니다'"
+  ],
+
+  "_comment_known_issues": "환경별 동작 차이, 알려진 기술 제약 등. plan.md 리스크 섹션으로 변환됨.",
+  "known_issues": [
+    "예: 'stg01 환경에서 Transfer Type=3 동작이 운영과 다름'"
+  ]
+}

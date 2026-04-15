@@ -1,0 +1,22 @@
+# Claude Code session state — never commit
+.omc/
+.bkit/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Build artifacts
+node_modules/
+package-lock.json
+
+# Generated PPTX outputs (binary, user-specific)
+*.pptx
+~$*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Private work cases — keep your real cases out of git
+cases/
+/plan.md
+/context-input.json

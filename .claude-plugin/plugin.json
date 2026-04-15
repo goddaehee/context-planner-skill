@@ -1,0 +1,6 @@
+{
+  "name": "context-planner",
+  "version": "1.0.0",
+  "description": "Turn scattered wikis, specs, and meeting notes into an executable plan.md in 5 minutes",
+  "skills": ["./skills/context-planner"]
+}
